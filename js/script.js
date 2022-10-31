@@ -7,16 +7,39 @@ const letterInput = document.querySelector(".letter");
 const buttonGuess = document.querySelector(".guess");
 const buttonPlayAgain = document.querySelector(".play-again");
 
+// temporary word
+let word = "magnolia";
 
 // list of guessed letters
 const guessedList = [];
 
+// number of guesses allowed
+let numOfGuesses = 8;
 
-// temporary word
-const word = "magnolia";
+// fetch random word from hosted txt file
+
+const randomWord = async function (){
+    const response = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+    const data = await response.text();
+    // convert to array
+    const dataArray = data.split("\n");
+    // get a random number
+    const random = Math.floor( Math.random() * dataArray.length);
+    const selectWord = dataArray[random];
+    // remove white spaces
+    const selectedWord = selectWord.trim();
+    // reassign word variable to the randomly selected word
+    word = selectedWord;
+    // console.log(selectedWord);
+    placeholder(word);
+};
+
+// Start the game
+randomWord();
 
 // placeholder for each letter
 const placeholder = function(word){
+    console.log(`The word is ${word}`);
     let letters = [];
     for (let letter of word){
         letter = "●";
@@ -25,8 +48,6 @@ const placeholder = function(word){
     const placeholderLetters = letters.join("");
     wordInProgress.innerText = placeholderLetters;
 };
-
-placeholder(word);
 
 
 buttonGuess.addEventListener("click", function (e) {
@@ -42,8 +63,6 @@ buttonGuess.addEventListener("click", function (e) {
     // only will if the correct value is entered) then run next function
     if (validatedLetter) {
         checkAlreadyGuessed(validatedLetter);
-        // show the letters
-        matchGuessedLetter(guessedList);
     }
 
     // empty out the input field
@@ -68,7 +87,7 @@ const checkAlphabet = function (letter) {
         message.innerText = ("");
         // return the value so that it can be used in next function
         return letter;
-        // or run function here instead of in the button event
+        // or run function here instead of in the button event?
         // checkAlreadyGuessed(letterEntered);
     }
     else {
@@ -90,6 +109,10 @@ const checkAlreadyGuessed = function (letter) {
         guessedList.push(UpperCaseLetter);
         // console.log(list);
         showGuessedList();
+         // show the letters
+         matchGuessedLetter(guessedList);
+         // change number of guesses left
+         changeNum(letter);
     }
     
 };
@@ -119,6 +142,7 @@ const matchGuessedLetter = function (list) {
 
     // compare letters
     for (let letter of singleLetters) {
+        
         if ( list.includes(letter) ) {
             revealLetters.push(letter);
         }
@@ -144,5 +168,26 @@ const won = function () {
     }
 };
     
+// Change the number of guesses after each attempt
 
+const changeNum = function (letter) {
 
+    if (word.includes(letter)) {
+        message.innerText = (`Good Guess! The word has letter ${letter.toUpperCase()}`)
+    }
+    else {
+        message.innerText = (`The word does not have letter ${letter.toUpperCase()}.`);
+        numOfGuesses -= 1;
+    };
+    
+    if ( numOfGuesses === 0) {
+        remainingGuesses.innerHTML = (`No more guesses left. The word was <span class="highlight">${word.toUpperCase()}</span>`)
+    }
+    else if (numOfGuesses === 1) {
+        remainingGuessesNumber.innerText = (`${numOfGuesses} guess`);
+    }
+    else {
+        remainingGuessesNumber.innerText = (`${numOfGuesses} guesses`);
+    }
+    
+};
