@@ -11,7 +11,7 @@ const buttonPlayAgain = document.querySelector(".play-again");
 let word = "magnolia";
 
 // list of guessed letters
-const guessedList = [];
+let guessedList = [];
 
 // number of guesses allowed
 let numOfGuesses = 8;
@@ -38,9 +38,12 @@ const randomWord = async function (){
 randomWord();
 
 // placeholder for each letter
-const placeholder = function(word){
+const placeholder = function (word) {
+
     console.log(`The word is ${word}`);
-    let letters = [];
+
+    const letters = [];
+
     for (let letter of word){
         letter = "●";
         letters.push(letter);
@@ -51,10 +54,16 @@ const placeholder = function(word){
 
 
 buttonGuess.addEventListener("click", function (e) {
+
     // prevent form submission and reloading of the page
     e.preventDefault();
+
+    // empty message paraghraph
+    message.innerText = "";
+
     // get value of input
     const inputLetter = letterInput.value;
+
     // console.log(inputLetter);
     const validatedLetter = checkAlphabet(inputLetter);
     // console.log(validatedLetter);
@@ -71,9 +80,11 @@ buttonGuess.addEventListener("click", function (e) {
 
 // check input to match alphabets and single entry
 const checkAlphabet = function (letter) {
+
     const requirement = /[A-Za-z]/;
     const letterEntered = letter;
     const check = letterEntered.match(requirement);
+
     if (letterEntered === "") {
         // check for empty input value
         message.innerText = ("Enter a letter first then press button");
@@ -98,12 +109,14 @@ const checkAlphabet = function (letter) {
 
 // check input against already existing guesses
 const checkAlreadyGuessed = function (letter) {
+
     // case sensitive
     const UpperCaseLetter = letter.toUpperCase();
 
     if (guessedList.includes(UpperCaseLetter)) {
         message.innerText = ("Already guessed. Try a different letter");;
     }
+
     else {
         // message.innerText = ("");
         guessedList.push(UpperCaseLetter);
@@ -123,6 +136,7 @@ const showGuessedList = function () {
     guessedLettersList.innerHTML = "";
 
     for (let letter of guessedList) {
+
         let li = document.createElement("li");
         li.innerText = letter;
         guessedLettersList.append(li);
@@ -132,6 +146,7 @@ const showGuessedList = function () {
 
 // match letters to the word to reveal the word
 const matchGuessedLetter = function (list) {
+
     const upperCaseWord = word.toUpperCase();
 
     // split the letters of the word into an array
@@ -158,18 +173,19 @@ const matchGuessedLetter = function (list) {
     won();
 };
 
+
+// correct word guessed
 const won = function () {
-    if ( word.toUpperCase() === wordInProgress.innerHTML) {
+
+    if ( word.toUpperCase() === wordInProgress.innerText) {
+
         message.classList.add("win");
-        message.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`;  
-        buttonGuess.classList.add("hide");
-        buttonPlayAgain.classList.remove("hide");    
-        
+        message.innerHTML = (`<p class="highlight">You guessed the correct word! Congrats!</p>`);  
+        gameOver();
     }
 };
     
 // Change the number of guesses after each attempt
-
 const changeNum = function (letter) {
 
     if (word.includes(letter)) {
@@ -181,7 +197,8 @@ const changeNum = function (letter) {
     };
     
     if ( numOfGuesses === 0) {
-        remainingGuesses.innerHTML = (`No more guesses left. The word was <span class="highlight">${word.toUpperCase()}</span>`)
+        message.innerHTML = (`No more guesses left. The word was <span class="highlight">${word.toUpperCase()}</span>`);
+        gameOver();
     }
     else if (numOfGuesses === 1) {
         remainingGuessesNumber.innerText = (`${numOfGuesses} guess`);
@@ -191,3 +208,41 @@ const changeNum = function (letter) {
     }
     
 };
+
+// game completed
+
+const gameOver = function () {
+    buttonGuess.classList.add("hide");
+    buttonPlayAgain.classList.remove("hide"); 
+    guessedLettersList.classList.add("hide");
+    remainingGuesses.classList.add("hide");
+    letterInput.disabled = true;
+};
+
+// play again function to reset the game
+
+buttonPlayAgain.addEventListener("click", function(){
+    // reset all values
+    message.classList.remove("win");
+    message.innerText = ""; 
+    guessedLettersList.innerHTML = "";
+    remainingGuessesNumber.innerText = `${numOfGuesses} guesses`;
+    guessedList = [];
+    numOfGuesses = 8;
+
+    // show the right UI elements
+    buttonGuess.classList.remove("hide");
+    buttonPlayAgain.classList.add("hide"); 
+    guessedLettersList.classList.remove("hide");
+    remainingGuesses.classList.remove("hide");
+    letterInput.disabled = false;
+    
+
+    // run the function to find another word
+    randomWord();
+});
+
+
+
+
+
