@@ -18,18 +18,33 @@
       <h1>
         <img class="logo" src="img/logo.png" alt="Guess The Word" />
       </h1>
-      <p class="message"></p>
-      <p class="word-in-progress"></p>
-      <p class="remaining">You have <span>8 guesses</span> remaining.</p>
-      <ul class="guessed-letters"></ul>
-      <form action="" class="guess-form">
-        <label for="letter">Type one letter:</label>
-        <input type="text" name="letter" class="letter" />
-        <div class="form-element button-element">
-          <button class="guess">Guess!</button>
-        </div>
-      </form>
-      <button class="play-again hide">Play Again!</button>
+
+      <div class="level">
+        <p>Choose a level:</p>
+        <button class="easy">Easy</button>
+        <button class="hard">Hard</button>
+        <ul>
+          <li>Easy level gives you <span>10</span> guesses</li>
+          <li>Hard level gives you <span>5</span> guesses</li>
+        </ul>
+      </div>
+
+      <div class="game hide">
+        <p class="message"></p>
+        <p class="word-in-progress"></p>
+        <p class="remaining">You have <span></span> remaining.</p>
+        <ul class="guessed-letters"></ul>
+        <form action="" class="guess-form">
+          <label for="letter">Type one letter:</label>
+          <input type="text" name="letter" class="letter" />
+          <div class="form-element button-element">
+            <button class="guess">Guess!</button>
+          </div>
+        </form>
+        <button class="play-again hide">Play Again!</button>
+      </div>
+          
+      
     </div>
   </body>
 

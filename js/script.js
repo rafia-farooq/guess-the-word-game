@@ -7,6 +7,12 @@ const letterInput = document.querySelector(".letter");
 const buttonGuess = document.querySelector(".guess");
 const buttonPlayAgain = document.querySelector(".play-again");
 
+// game level
+const levels = document.querySelector(".level");
+const easy = document.querySelector(".easy");
+const hard = document.querySelector(".hard");
+const gameBoard = document.querySelector(".game")
+
 // temporary word
 let word = "magnolia";
 
@@ -14,7 +20,23 @@ let word = "magnolia";
 let guessedList = [];
 
 // number of guesses allowed
-let numOfGuesses = 8;
+let numOfGuesses;
+
+// select game level
+easy.addEventListener("click", function () {
+    numOfGuesses = 10;
+    levels.classList.add("hide");
+    gameBoard.classList.remove("hide");
+    remainingGuessesNumber.innerText = `${numOfGuesses} guesses`;
+});
+
+hard.addEventListener("click", function () {
+    numOfGuesses = 5;
+    levels.classList.add("hide");
+    gameBoard.classList.remove("hide");
+    remainingGuessesNumber.innerText = `${numOfGuesses} guesses`;
+});
+
 
 // fetch random word from hosted txt file
 
@@ -122,10 +144,10 @@ const checkAlreadyGuessed = function (letter) {
         guessedList.push(UpperCaseLetter);
         // console.log(list);
         showGuessedList();
-         // show the letters
+        // change number of guesses left
+        changeNum(letter);
+         // show the letters and if all match run won() function
          matchGuessedLetter(guessedList);
-         // change number of guesses left
-         changeNum(letter);
     }
     
 };
@@ -142,6 +164,30 @@ const showGuessedList = function () {
         guessedLettersList.append(li);
     }
    
+};
+
+// Change the number of guesses after each attempt
+const changeNum = function (letter) {
+
+    if (word.includes(letter)) {
+        message.innerText = `Good Guess! The word has letter ${letter.toUpperCase()}`
+    }
+    else {
+        message.innerText = `The word does not have letter ${letter.toUpperCase()}.`;
+        numOfGuesses -= 1;
+    };
+    
+    if ( numOfGuesses === 0) {
+        message.innerHTML = `No more guesses left. The word was <span class="highlight">${word.toUpperCase()}</span>`;
+        gameOver();
+    }
+    else if (numOfGuesses === 1) {
+        remainingGuessesNumber.innerText = (`${numOfGuesses} guess`);
+    }
+    else {
+        remainingGuessesNumber.innerText = (`${numOfGuesses} guesses`);
+    }
+    
 };
 
 // match letters to the word to reveal the word
@@ -180,34 +226,11 @@ const won = function () {
     if ( word.toUpperCase() === wordInProgress.innerText) {
 
         message.classList.add("win");
-        message.innerHTML = (`<p class="highlight">You guessed the correct word! Congrats!</p>`);  
+        message.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`;  
         gameOver();
     }
 };
     
-// Change the number of guesses after each attempt
-const changeNum = function (letter) {
-
-    if (word.includes(letter)) {
-        message.innerText = (`Good Guess! The word has letter ${letter.toUpperCase()}`)
-    }
-    else {
-        message.innerText = (`The word does not have letter ${letter.toUpperCase()}.`);
-        numOfGuesses -= 1;
-    };
-    
-    if ( numOfGuesses === 0) {
-        message.innerHTML = (`No more guesses left. The word was <span class="highlight">${word.toUpperCase()}</span>`);
-        gameOver();
-    }
-    else if (numOfGuesses === 1) {
-        remainingGuessesNumber.innerText = (`${numOfGuesses} guess`);
-    }
-    else {
-        remainingGuessesNumber.innerText = (`${numOfGuesses} guesses`);
-    }
-    
-};
 
 // game completed
 
@@ -231,6 +254,8 @@ buttonPlayAgain.addEventListener("click", function(){
     numOfGuesses = 8;
 
     // show the right UI elements
+    levels.classList.remove("hide");
+    gameBoard.classList.add("hide");
     buttonGuess.classList.remove("hide");
     buttonPlayAgain.classList.add("hide"); 
     guessedLettersList.classList.remove("hide");

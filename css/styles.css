@@ -34,7 +34,8 @@ h1 {
   text-align: center;
 }
 
-.container {
+.container, 
+.game {
   background: radial-gradient(50% 50% at 50% 50%,
     rgba(167, 237, 237, 0.3) 0%,
     rgba(156, 226, 226, 0) 100%);
@@ -109,7 +110,9 @@ input:focus {
 }
 
 .guess,
-.play-again {
+.play-again,
+.easy,
+.hard {
   padding: 1em 3em;
   border-radius: 50px;
   margin-top: 1em;
@@ -154,4 +157,23 @@ input:focus {
   100% {
     background-position: 0% 50%;
   }
+}
+
+.level {
+  margin-top: 3em;
+  text-align: center;
+}
+
+.level ul {
+  margin-top: 2em;
+  font-size: 0.8em;
+  font-weight: light;
+  font-style: italic;
+  list-style-type: "👍";
+}
+
+.level ul span {
+  text-decoration: underline;
+  color: #ff8d5c;
+  margin: 0 8px;
 }
