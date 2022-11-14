@@ -85,8 +85,8 @@ buttonGuess.addEventListener("click", function (e) {
 
     // get value of input
     const inputLetter = letterInput.value;
-
     // console.log(inputLetter);
+
     const validatedLetter = checkAlphabet(inputLetter);
     // console.log(validatedLetter);
 
@@ -136,7 +136,7 @@ const checkAlreadyGuessed = function (letter) {
     const UpperCaseLetter = letter.toUpperCase();
 
     if (guessedList.includes(UpperCaseLetter)) {
-        message.innerText = ("Already guessed. Try a different letter");;
+        message.innerText = ("Already guessed. Try a different letter");
     }
 
     else {
@@ -167,13 +167,16 @@ const showGuessedList = function () {
 };
 
 // Change the number of guesses after each attempt
-const changeNum = function (letter) {
+const changeNum = function (UpperCaseLetter) {
     const upperCaseWord = word.toUpperCase();
-    if (upperCaseWord.includes(letter)) {
-        message.innerText = `Good Guess! The word has letter ${letter}`
+    // console.log(UpperCaseLetter);
+    // console.log(upperCaseWord);
+
+    if (upperCaseWord.includes(UpperCaseLetter)) {
+        message.innerText = `Good Guess! The word has letter ${UpperCaseLetter}`
     }
     else {
-        message.innerText = `The word does not have letter ${letter}.`;
+        message.innerText = `The word does not have letter ${UpperCaseLetter}.`;
         numOfGuesses -= 1;
     };
     
