@@ -145,7 +145,7 @@ const checkAlreadyGuessed = function (letter) {
         // console.log(list);
         showGuessedList();
         // change number of guesses left
-        changeNum(letter);
+        changeNum(UpperCaseLetter);
          // show the letters and if all match run won() function
          matchGuessedLetter(guessedList);
     }
@@ -168,17 +168,17 @@ const showGuessedList = function () {
 
 // Change the number of guesses after each attempt
 const changeNum = function (letter) {
-
-    if (word.includes(letter)) {
-        message.innerText = `Good Guess! The word has letter ${letter.toUpperCase()}`
+    const upperCaseWord = word.toUpperCase();
+    if (upperCaseWord.includes(letter)) {
+        message.innerText = `Good Guess! The word has letter ${letter}`
     }
     else {
-        message.innerText = `The word does not have letter ${letter.toUpperCase()}.`;
+        message.innerText = `The word does not have letter ${letter}.`;
         numOfGuesses -= 1;
     };
     
     if ( numOfGuesses === 0) {
-        message.innerHTML = `No more guesses left. The word was <span class="highlight">${word.toUpperCase()}</span>`;
+        message.innerHTML = `No more guesses left. The word was <span class="highlight">${upperCaseWord}</span>`;
         gameOver();
     }
     else if (numOfGuesses === 1) {
